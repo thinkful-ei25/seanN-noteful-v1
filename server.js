@@ -36,4 +36,5 @@ function findNoteByID(id){
   return item; 
 
 }
-app.get('/api/notes/:id', (req, res) => res.json(findNoteByID(req.params.id))); 
+app.get('/api/notes/:id', (req, res) => 
+  res.json(data.find(item => item.id === Number(req.params.id)))); 
