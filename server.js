@@ -22,4 +22,9 @@ app.get('/api/notes', (req, res) => {
   res.json(data); 
 }); 
 
+function findNote(id){
+  const item = data.find(item => item.id === Number(id)); 
+  return item; 
 
+}
+app.get('/api/notes/:id', (req, res) => res.json(findNote(req.params.id))); 
