@@ -18,13 +18,22 @@ app.listen(8080, function() {
   console.log(err);
 });
 
+function findNoteBySearch(search){ 
+  const item = data.filter(item => item.title.includes(search.searchTerm)); 
+  
+  return item; 
+
+}
+
 app.get('/api/notes', (req, res) => { 
-  res.json(data); 
+  let query = req.query; 
+  let search = findNoteBySearch(query); 
+  res.json(search); 
 }); 
 
-function findNote(id){
+function findNoteByID(id){
   const item = data.find(item => item.id === Number(id)); 
   return item; 
 
 }
-app.get('/api/notes/:id', (req, res) => res.json(findNote(req.params.id))); 
+app.get('/api/notes/:id', (req, res) => res.json(findNoteByID(req.params.id))); 
