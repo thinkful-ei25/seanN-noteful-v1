@@ -19,14 +19,28 @@ app.use(logger);
 // Get All (and search by query)
 app.get('/api/notes', (req, res) => {
   const { searchTerm } = req.query;
-  res.json(searchTerm ? data.filter(item => item.title.includes(searchTerm)) : data);
+  //res.json(searchTerm ? data.filter(item => item.title.includes(searchTerm)) : data);
+  
+  notes.filter(searchTerm, (err, list, next) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(list); // responds with filtered array
+  });
 });
 
 // Get a single item
 app.get('/api/notes/:id', (req, res) => {
-  const id = req.params.id;
-  res.json(data.find(item => item.id === Number(id)));
+  //const id = req.params.id;
+  //res.json(data.find(item => item.id === Number(id)));
+  const { id } = req.params; 
 
+  notes.find(id, (err, item, next) => { 
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(item); 
+  });
 });
 
 app.get('/boom', (req, res, next) =>{ 
