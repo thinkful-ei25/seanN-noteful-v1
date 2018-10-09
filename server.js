@@ -45,9 +45,6 @@ app.use(function (err, req, res, next) {
   });
 });
 
-
-
-
 // Listen for incoming connections
 app.listen(PORT, function () {
   console.info(`Server listening on ${this.address().port}`);
