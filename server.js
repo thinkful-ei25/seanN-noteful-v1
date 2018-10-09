@@ -1,26 +1,37 @@
 'use strict';
 
-
-
-console.log('Hello Noteful!');
-
-// INSERT EXPRESS APP CODE HERE...
-const express = require('express'); 
+const express = require('express');
 
 // Load array of notes
 const data = require('./db/notes');
 
-const app = express(); 
+// Create an Express application
+const app = express();
 
-app.listen(8080, function() { 
-  console.info(`Server listening on ${this.address().port}`);
-}).on('error', err => { 
-  console.log(err);
+// Create a static webserver
+app.use(express.static('public'));
+app.use((req, res, next) => { 
+  // eslint-disable-next-line no-console
+  console.log(req.method, req.url); 
+  return next();  
+}); 
+// Get All (and search by query)
+app.get('/api/notes', (req, res) => {
+  const { searchTerm } = req.query;
+  res.json(searchTerm ? data.filter(item => item.title.includes(searchTerm)) : data);
+
 });
 
-app.get('/api/notes', (req, res) => { 
-  res.json(data.filter(item => item.title.includes(req.query.searchTerm))); 
-}); 
+// Get a single item
+app.get('/api/notes/:id', (req, res) => {
+  const id = req.params.id;
+  res.json(data.find(item => item.id === Number(id)));
 
-app.get('/api/notes/:id', (req, res) => 
-  res.json(data.find(item => item.id === Number(req.params.id)))); 
+});
+
+// Listen for incoming connections
+app.listen(8080, function () {
+  console.info(`Server listening on ${this.address().port}`);
+}).on('error', err => {
+  console.error(err);
+});
