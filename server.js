@@ -1,6 +1,7 @@
 'use strict';
 
 const {PORT} = require('./config'); 
+const {logger} = require('./middleware/logger'); 
 const express = require('express');
 
 // Load array of notes
@@ -11,11 +12,7 @@ const app = express();
 
 // Create a static webserver
 app.use(express.static('public'));
-app.use((req, res, next) => { 
-  // eslint-disable-next-line no-console
-  console.log(new Date(), req.method, req.url); 
-  return next();  
-}); 
+app.use(logger); 
 
 // Get All (and search by query)
 app.get('/api/notes', (req, res) => {
