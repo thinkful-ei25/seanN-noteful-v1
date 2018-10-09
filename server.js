@@ -13,14 +13,14 @@ const app = express();
 app.use(express.static('public'));
 app.use((req, res, next) => { 
   // eslint-disable-next-line no-console
-  console.log(req.method, req.url); 
+  console.log(new Date(), req.method, req.url); 
   return next();  
 }); 
+
 // Get All (and search by query)
 app.get('/api/notes', (req, res) => {
   const { searchTerm } = req.query;
   res.json(searchTerm ? data.filter(item => item.title.includes(searchTerm)) : data);
-
 });
 
 // Get a single item
